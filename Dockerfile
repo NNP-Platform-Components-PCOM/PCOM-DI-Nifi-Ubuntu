@@ -7,7 +7,7 @@ FROM apache/nifi:1.26.0
 
 ARG BUILD_DATE
 ARG VCS_REF
-ARG VERSION="1.26.0-v2"
+ARG VERSION="1.26.0-v1"
 
 LABEL org.opencontainers.image.title="pcom-di-nifi-ubuntu" \
       org.opencontainers.image.description="NNP Data Ingestion component: nifi-ubuntu" \
