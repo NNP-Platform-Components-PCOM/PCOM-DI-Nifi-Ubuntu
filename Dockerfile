@@ -20,12 +20,15 @@ LABEL org.opencontainers.image.title="pcom-di-nifi-ubuntu" \
 
 USER root
 
-RUN mkdir -p /opt/nifi/nifi-current/drivers && \
-    curl -fsSL -o /opt/nifi/nifi-current/drivers/mysql-connector-j-9.4.0.jar \
+# Download JDBC drivers into a staging directory that is NOT overridden by the
+# nifi_drivers named volume. The compose entrypoint copies them into the
+# volume-mounted /opt/nifi/nifi-current/drivers/ on each container start.
+RUN mkdir -p /opt/nifi-drivers-init && \
+    curl -fsSL -o /opt/nifi-drivers-init/mysql-connector-j-9.4.0.jar \
       https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.4.0/mysql-connector-j-9.4.0.jar && \
-    curl -fsSL -o /opt/nifi/nifi-current/drivers/postgresql-42.7.3.jar \
+    curl -fsSL -o /opt/nifi-drivers-init/postgresql-42.7.3.jar \
       https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar && \
-    chmod 644 /opt/nifi/nifi-current/drivers/*.jar && \
-    chown -R nifi:nifi /opt/nifi/nifi-current/drivers
+    chmod 644 /opt/nifi-drivers-init/*.jar && \
+    chown -R nifi:nifi /opt/nifi-drivers-init
 
 USER nifi
